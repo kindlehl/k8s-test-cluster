@@ -80,7 +80,8 @@
 
   #- name: Configure node ip
     #lineinfile:
-      #path: /etc/default/kubelet
+      #create: yes
+      #path: /etc/kubernetes/kubelet.conf
       #line: KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}
 
   - name: Restart kubelet
@@ -101,7 +102,7 @@
 
   - name: Install calico pod network
     become: false
-    command: kubectl create -f https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+    command: kubectl create -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
 
   - name: Generate join command
     command: kubeadm token create --print-join-command
@@ -112,4 +113,5 @@
 
   handlers:
     - name: docker status
+
       service: name=docker state=started
